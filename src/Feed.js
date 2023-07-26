@@ -11,8 +11,12 @@ import { db } from "./firebase";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+import { useSelector } from "react-redux";
+import { selectUser } from "./features/userSlice";
+import FlipMove from "react-flip-move";
 
 function Feed() {
+  const user  = useSelector(selectUser);
   const [input, setInput] = useState("");
   const [posts, setPosts] = useState([]);
 
@@ -33,10 +37,10 @@ function Feed() {
     e.preventDefault();
 
     db.collection("posts").add({
-      name: "Joseph Faya",
-      description: "this is a test",
+      name: user.displayName,
+      description: user.email,
       message: input,
-      photoUrl: "",
+      photoUrl: user.photoUrl || "",
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
     });
 
@@ -71,6 +75,7 @@ function Feed() {
         </div>
       </div>
 
+     <FlipMove>
       {posts.map(({ id, data: { name, description, message, photoUrl } }) => (
         <Post
           key={id}
@@ -80,6 +85,7 @@ function Feed() {
           photoUrl={photoUrl}
         />
       ))}
+     </FlipMove>  
     </div>
   );
 }
@@ -110,3 +116,4 @@ export default Feed;
 //if you dont give it a key, then react will rerender all the elements
 //LINE 20 - orders the post by timestamp in a descending order. desc mean descending
 //AUNTHENTICATION - Store the username inside of redux
+//this animation needed reference to the object that was going to get animated

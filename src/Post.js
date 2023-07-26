@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import InputOption from './InputOption';
 import './Post.css';
 import ThumbUpAltOutlinedIcon from '@mui/icons-material/ThumbUpAltOutlined';
@@ -8,11 +8,11 @@ import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 
-function Post( { name, description, message, photoUrl }) {
+const Post = forwardRef (({ name, description, message, photoUrl }, ref) => {
   return (
-    <div className='post'>
+    <div ref={ref} className='post'>
         <div className="post_header">
-            <Avatar />
+            <Avatar src={photoUrl}>{name[0]}</Avatar>
             <div className="post_info">
                 <h2>{name}</h2>
                 <p>{description}</p>
@@ -31,7 +31,7 @@ function Post( { name, description, message, photoUrl }) {
         </div>
     </div>
   );
-}
+})
 
 export default Post
 
@@ -39,3 +39,4 @@ export default Post
 //For example, we are now working on the post component for out app
 //the post component will be made up of name, desription, message and photo url
 //these are all the properties you will see on the app
+//react needs to know, it needs to have certain pointer towards certain things ref=ref is how the amination works
